@@ -40,14 +40,21 @@ public class ColorSelectDialog {
     private int finalColor;
 
     private MyAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    View dialoglayout;
+    private View dialoglayout;
+
+    private AlertDialog.Builder builder;
     private Context context;
     private OnColorSelectListener onColorSelectListener;
 
+    private String Title = "--顏色選擇器--";
+    private int TextSize = 20;
+    private int TextColor = Color.BLACK;
+    private int BackgroundColor = Color.parseColor("#99FFFF");
+
+
     public ColorSelectDialog(Context context) {
         this.context = context;
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         dialoglayout = inflater.inflate(R.layout.color_dialog, null);
@@ -74,7 +81,7 @@ public class ColorSelectDialog {
             myDataset.add(imageAry[i]);
         }
         mAdapter = new MyAdapter(myDataset);
-        mRecyclerView = (RecyclerView) dialoglayout.findViewById(R.id.recycleview);
+        RecyclerView mRecyclerView = (RecyclerView) dialoglayout.findViewById(R.id.recycleview);
         GridLayoutManager layoutManager = new GridLayoutManager(context, 6);
 
 
@@ -84,24 +91,39 @@ public class ColorSelectDialog {
         mAdapter.notifyDataSetChanged();
 
 
+    }
+
+    public void show() {
         TextView title = new TextView(context);
-// You Can Customise your Title here
-        title.setText("--顏色選擇器--");
-        title.setBackgroundColor(Color.parseColor("#99FFFF"));
-        title.setTextColor(Color.BLACK);
+        title.setText(Title);
+        title.setBackgroundColor(BackgroundColor);
+        title.setTextColor(TextColor);
         title.setPadding(10, 15, 10, 15);
         title.setGravity(Gravity.CENTER);
-
-        title.setTextSize(20);
+        title.setTextSize(TextSize);
 
         builder.setCustomTitle(title);
         dialog = builder.create();
 
-    }
-
-    public void show() {
         dialog.show();
 
+    }
+    public void setBackgroundColor(int color) {
+        this.BackgroundColor = color;
+    }
+    public void setTitle(String title) {
+        this.Title = title;
+    }
+    public void setTextColor(int color) {
+        this.TextColor = color;
+    }
+
+    public void setTextSize(int size) {
+        if (size > 0) {
+            this.TextSize = size;
+        } else {
+            this.TextSize = 20;
+        }
     }
 
     public void close() {
